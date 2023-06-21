@@ -80,7 +80,7 @@ resource "aws_security_group" "proj-sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-ingress {
+  ingress {
     description      = "HTTP Traffic"
     from_port        = 80
     to_port          = 80
@@ -133,7 +133,7 @@ resource "aws_eip" "proj-eip" {
 resource "aws_instance" "proj-instance" {
   ami           = "ami-0cf13cb849b11b451" # eu-north-1
   instance_type = "t3.micro"
-  availability_zone = "eu-north-1c"
+  availability_zone = "eu-north-1b"
   key_name = "devopslabs.pem"
 
   network_interface {
@@ -142,7 +142,15 @@ resource "aws_instance" "proj-instance" {
   }
   
 
+  user_data = <<EOF
+                #!/bin/bash
+                sudo apt update -y
+                sudo apt install nginx -y
+                sudo systemctl start nginx
+                sudo systemctl enable nginx
+                EOF
+
   tags = {
-      Name = "prod_server"
+      Name = "project-instance"
   }
 }
