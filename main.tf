@@ -142,14 +142,6 @@ resource "aws_instance" "proj-instance" {
   }
   
 
-  user_data = <<EOF
-                #!/bin/bash
-                sudo apt update -y
-                sudo apt install nginx -y
-                sudo systemctl start nginx
-                sudo systemctl enable nginx
-                EOF
-
   tags = {
       Name = "prod_server"
   }
